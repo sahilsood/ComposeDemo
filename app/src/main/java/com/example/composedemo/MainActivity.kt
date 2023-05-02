@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.composedemo.ui.theme.ComposeDemoTheme
@@ -41,30 +42,64 @@ fun CreateBizCard() {
         ) {
             Card(
                 modifier = Modifier
-                    .width(width = 200.dp)
-                    .height(height = 200.dp)
                     .padding(all = 15.dp),
                 shape = RoundedCornerShape(CornerSize(size = 15.dp)),
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             ) {
-                Surface(
-                    modifier = Modifier
-                        .size(size = 200.dp)
-                        .align(alignment = Alignment.CenterHorizontally)
-                        .padding(all = 15.dp),
-                    shape = CircleShape,
-                    shadowElevation = 4.dp,
-                    border = BorderStroke(width = 0.5.dp, color = Color.LightGray),
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+                Column(
+                    modifier = Modifier.height(300.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.profile_image),
-                        contentDescription = "profile image",
-                        modifier = Modifier.size(size = 135.dp)
-                    )
+                    CreateProfileImage()
+                    Divider(thickness = 1.dp)
+                    CreateInfoSection()
+                    Button(onClick = { /* Do something! */ }) {
+                        Text("Portfolio", color = Color.White)
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun CreateInfoSection() {
+    Column(modifier = Modifier.padding(all = 5.dp)) {
+        Text(
+            text = "Sahil Sood",
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.primary
+        )
+        Text(
+            text = "Android Developer",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Black
+        )
+        Text(
+            text = "@sahilsood28",
+            style = MaterialTheme.typography.bodySmall,
+            color = Color.Black
+        )
+    }
+}
+
+@Composable
+private fun CreateProfileImage(modifier: Modifier = Modifier) {
+    Surface(
+        modifier = Modifier
+            .size(size = 200.dp)
+            .padding(all = 15.dp),
+        shape = CircleShape,
+        shadowElevation = 4.dp,
+        border = BorderStroke(width = 0.5.dp, color = Color.LightGray),
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.profile_image),
+            contentDescription = "profile image",
+            modifier = Modifier.size(size = 135.dp)
+        )
     }
 }
 
