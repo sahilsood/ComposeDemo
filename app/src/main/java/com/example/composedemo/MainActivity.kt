@@ -6,11 +6,15 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.composedemo.ui.theme.ComposeDemoTheme
 
 class MainActivity : ComponentActivity() {
@@ -33,6 +38,9 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun CreateBizCard() {
     ComposeDemoTheme {
+        val buttonClickState = remember {
+            mutableStateOf(false)
+        }
         // A surface container using the 'background' color from the theme
         Surface(
             modifier = Modifier
@@ -47,18 +55,63 @@ fun CreateBizCard() {
                 elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             ) {
                 Column(
-                    modifier = Modifier.height(300.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CreateProfileImage()
                     Divider(thickness = 1.dp)
                     CreateInfoSection()
-                    Button(onClick = { /* Do something! */ }) {
-                        Text("Portfolio", color = Color.White)
+                    Button(
+                        onClick = { buttonClickState.value = !buttonClickState.value },
+                        shape = CircleShape,
+                        contentPadding = PaddingValues(0.dp) //this is to remove button's default padding to avoid text from disappearing
+                    ) {
+                        Text(
+                            text = "Portfolio",
+                            fontSize = 7.sp,
+                        )
+                    }
+                    if (buttonClickState.value) {
+                        Content()
+                    } else {
+                        Box() {
+
+                        }
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun Porifolio(data: List<String>) {
+    LazyColumn {
+        items(data) { item ->
+            Text(text = item)
+        }
+    }
+}
+
+@Composable
+private fun Content() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxWidth()
+            .padding(all = 5.dp)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(),
+            border = BorderStroke(width = 2.dp, color = Color.LightGray),
+            shape = RoundedCornerShape(corner = CornerSize(size = 5.dp))
+        ) {
+            Porifolio(data = listOf("Project 1", "Project 2", "Project 3"))
         }
     }
 }
